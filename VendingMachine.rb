@@ -45,7 +45,6 @@ class VendingMachine
   end
 
 
-
     # 投入金額を足していくメゾット
   def slot_money(money)
     return false unless MONEY.include?(money)
