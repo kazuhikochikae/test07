@@ -1,15 +1,55 @@
-class VendingMachine
-  # 投入できるお金を設定する。.freezeによって、値が変わることを防ぐ
+class SlotMoney
+    # 初期化。投入金額を0円にする
+    def initialize
+      @slot_money = 0
+    end
   MONEY = [10, 50, 100, 500, 1000].freeze
 
+  def slot_money
+    while true 
+      puts "a:購入キャンセル, 半角数字:お金を入れる"
+      input = gets.chomp 
+      if input == "a"
+        false
+      else
+        money = input.to_i
+        if MONEY.include?(money)
+          @slot_money += money
+         
+        else 
+         #binding.irb
+          @change_money += money
+        end
+      end
+    end
+  end
+  def current_slot_money
+    @slot_money
+  end
+  def change_money
+    @change_money
+  end
+end
+aaa = SlotMoney.new
+#aaa.slot_money
+puts aaa.current_slot_maney
+puts aaa.change_money
+
+class VendingMachine
+  # 投入できるお金を設定する。.freezeによって、値が変わることを防ぐ
+
   def drink_list
-  drinks = [{drink: "コーラ", price: 120, stock: 5}]
+  drinks = [{drink: "コーラ", price: 120, stock: 5},
+            {drink: "レッドブル", price: 200, stock: 5}]
   #drinks
   end
 
-  # 初期化。投入金額を0円にする
-  def initialize
-    @slot_money = 0
+
+
+    # 投入金額を足していくメゾット
+  def slot_money(money)
+    return false unless MONEY.include?(money)
+    @slot_money += money
   end
 
   # 合計金額だけを出力する
@@ -18,13 +58,25 @@ class VendingMachine
   end
 
   def buy_drink
-    if current_slot_money
-  end
+    # current_slot_maneyと、全ての飲み物のpriceを比較して、
+    # current_slot_maney >= priceになる商品だけ並べる
+    can_buy_drink = []
+    drink_list.each do | drink |
+        if current_slot_money >= drink[:price]
+          can_buy_drink << drink
+        else
+      end
+    end
 
-  # 投入金額を足していくメゾット
-  def slot_money(money)
-    return false unless MONEY.include?(money)
-    @slot_money += money
+    can_buy_drink
+    binding.irb
+
+
+    # 並んだ商品の番号（id？）を選択すると、購入できる
+    
+    # 買った商品に応じて、売上が加算される
+
+    # if current_slot_money
   end
 
   # お釣りの値を返す
@@ -34,8 +86,10 @@ class VendingMachine
   end
 end
 
-set = VendingMachine.new
-puts set.drink_list[0][:drink]
+set_vm = VendingMachine.new
+# set_vm.slot_money(150)
+set_vm.slot_money(150).current_slot_money.buy_drink
+# puts set.drink_list[0][:drink]
 # ————————————————————————————————————————
 
 # step2
@@ -69,6 +123,6 @@ puts set.drink_list[0][:drink]
 
 # ————————————————————————————————————————
 
-vm = VendingMachine.new
-vm.slot_money(100)
-p vm.current_slot_money
+# vm = VendingMachine.new
+# vm.slot_money(100)
+# p vm.current_slot_money
