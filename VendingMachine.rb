@@ -1,50 +1,56 @@
 class SlotMoney
+
   # 初期化。投入金額を0円にする
   def initialize
-    @slot_money = 0
-    @change_money = 0
+    @slot_money = 0   # 自販機に反映される、投入金額
+    @change_money = 0  # お釣りの金額
   end
 
+    # 投入できるお金を設定する。.freezeによって、値が変わることを防ぐ
   MONEY = [10, 50, 100, 500, 1000].freeze
 
-  def slot_money
+  # 入金と、払い戻しの仕組み
+  def slot_money   
     puts "a:入金を止める, 半角数字:お金を入れる"
-    while true 
+    while true #投入を複数回できる仕組み
       input = gets.chomp 
-      return false if input == "a"
+      return false if input == "a"  #aならfalseになり、繰り返しを止める
       money = input.to_i
-      if MONEY.include?(money)
-        @slot_money += money
+      if MONEY.include?(money)  #もしMONEY（配列）の数字が含まれていたら
+        @slot_money += money    #投入金額を増やしていく
       elsif input =~ /^[0-9]+$/
-        @change_money += money
+        @change_money += money  #お釣りの額を増やしていく
       else
         puts "aまたは半角数字を入力してください"
       end
     end
   end
 
-  def current_slot_money
+  #現在の投入金額
+  def current_slot_money   
     @slot_money
   end
   
+  #お釣りの金額
   def change_money
     @change_money
   end
 end
 
+
 class VendingMachine
-  # 投入できるお金を設定する。.freezeによって、値が変わることを防ぐ
   def initialize
-    drink_name = []
+    drink_name = []      #ドリンクネームの初期化
   end
 
+  #配列にして、データを挿入
   def drink_list
-  drinks = [{drink: "コーラ", price: 120, stock: 5},
+  drinks = [{drink: "コーラ", price: 120, stock: 5},   
             {drink: "レッドブル", price: 200, stock: 5},
             {drink: "水", price: 100, stock: 5}]
-
   end
 
+  #
   def buy_drink(current_slot_money)
     # current_slot_maneyと、全ての飲み物のpriceを比較して、
     # current_slot_maney >= priceになる商品だけ並べる
